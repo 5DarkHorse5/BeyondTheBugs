@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Exchange Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .input-section {
+            padding: 40px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .input-wrapper {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            align-items: stretch;
+        }
+
+        .currency-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 18px 20px;
+            font-size: 1.2em;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results-section {
+            padding: 40px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .currency-card {
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .currency-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .currency-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .flag {
+            font-size: 2.5em;
+            line-height: 1;
+        }
+
+        .currency-name {
+            flex: 1;
+        }
+
+        .currency-code {
+            font-weight: 700;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .currency-full {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .card-body {
+            border-top: 1px solid #e9ecef;
+            padding-top: 15px;
+        }
+
+        .rate-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rate-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .rate-value {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1em;
+        }
+
+        .converted-amount {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #333;
+            text-align: right;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .loading {
+            color: #999;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .currency-badge {
+                padding: 15px;
+                justify-content: center;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💱 Currency Exchange</h1>
+            <p>Real-time exchange rates from South African Rand</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-wrapper">
+                <label class="input-label">Enter Amount</label>
+                <div class="input-group">
+                    <div class="currency-badge">🇿🇦 ZAR</div>
+                    <input type="number" id="amount" placeholder="0.00" step="0.01" min="0">
+                </div>
+                <button onclick="convertCurrency()">Convert Currency</button>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div class="results-grid">
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇺🇸</div>
+                        <div class="currency-name">
+                            <div class="currency-code">USD</div>
+                            <div class="currency-full">US Dollar</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate1">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result1">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇪🇺</div>
+                        <div class="currency-name">
+                            <div class="currency-code">EUR</div>
+                            <div class="currency-full">Euro</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate2">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result2">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇬🇧</div>
+                        <div class="currency-name">
+                            <div class="currency-code">GBP</div>
+                            <div class="currency-full">British Pound</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate3">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result3">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇯🇵</div>
+                        <div class="currency-name">
+                            <div class="currency-code">JPY</div>
+                            <div class="currency-full">Japanese Yen</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate4">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result4">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇦🇺</div>
+                        <div class="currency-name">
+                            <div class="currency-code">AUD</div>
+                            <div class="currency-full">Australian Dollar</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate5">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result5">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇨🇦</div>
+                        <div class="currency-name">
+                            <div class="currency-code">CAD</div>
+                            <div class="currency-full">Canadian Dollar</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate6">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result6">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇨🇭</div>
+                        <div class="currency-name">
+                            <div class="currency-code">CHF</div>
+                            <div class="currency-full">Swiss Franc</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate7">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result7">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇨🇳</div>
+                        <div class="currency-name">
+                            <div class="currency-code">CNY</div>
+                            <div class="currency-full">Chinese Yuan</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate8">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result8">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇮🇳</div>
+                        <div class="currency-name">
+                            <div class="currency-code">INR</div>
+                            <div class="currency-full">Indian Rupee</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate9">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result9">0.00</div>
+                    </div>
+                </div>
+
+                <div class="currency-card">
+                    <div class="card-header">
+                        <div class="flag">🇧🇷</div>
+                        <div class="currency-name">
+                            <div class="currency-code">BRL</div>
+                            <div class="currency-full">Brazilian Real</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rate-row">
+                            <span class="rate-label">Exchange Rate</span>
+                            <span class="rate-value" id="rate10">Loading...</span>
+                        </div>
+                        <div class="converted-amount" id="result10">0.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer" id="lastUpdated">
+            Loading exchange rates...
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            fetchExchangeRates();
+        };
+
+        function fetchExchangeRates() {
+            fetch('https://api.exchangerate-api.com/v4/latest/ZAR')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('rate1').textContent = data.rates.USD.toFixed(4);
+                    document.getElementById('rate2').textContent = data.rates.EUR.toFixed(4);
+                    document.getElementById('rate3').textContent = data.rates.GBP.toFixed(4);
+                    document.getElementById('rate4').textContent = data.rates.JPY.toFixed(2);
+                    document.getElementById('rate5').textContent = data.rates.AUD.toFixed(4);
+                    document.getElementById('rate6').textContent = data.rates.CAD.toFixed(4);
+                    document.getElementById('rate7').textContent = data.rates.CHF.toFixed(4);
+                    document.getElementById('rate8').textContent = data.rates.CNY.toFixed(4);
+                    document.getElementById('rate9').textContent = data.rates.INR.toFixed(2);
+                    document.getElementById('rate10').textContent = data.rates.BRL.toFixed(4);
+
+                    const lastUpdated = new Date(data.time_last_updated * 1000);
+                    document.getElementById('lastUpdated').textContent = 
+                        'Exchange rates last updated: ' + lastUpdated.toLocaleString();
+                })
+                .catch(error => {
+                    console.error('Error fetching exchange rates:', error);
+                    document.getElementById('lastUpdated').textContent = 
+                        'Failed to load exchange rates. Please refresh the page.';
+                });
+        }
+        
+        function convertCurrency(){
+            var amount = parseFloat(document.getElementById('amount').value);
+            if(isNaN(amount) || amount < 0){
+                alert("Please enter a valid amount");
+                return;
+            }
+
+            var rates = [
+                parseFloat(document.getElementById('rate1').textContent),
+                parseFloat(document.getElementById('rate2').textContent),
+                parseFloat(document.getElementById('rate3').textContent),
+                parseFloat(document.getElementById('rate4').textContent),
+                parseFloat(document.getElementById('rate5').textContent),
+                parseFloat(document.getElementById('rate6').textContent),
+                parseFloat(document.getElementById('rate7').textContent),
+                parseFloat(document.getElementById('rate8').textContent),
+                parseFloat(document.getElementById('rate9').textContent),
+                parseFloat(document.getElementById('rate10').textContent)
+            ];
+
+            for (var i = 0; i < rates.length; i++){
+                var result = amount * rates[i];
+                document.getElementById('result' + (i+1)).textContent = result.toFixed(2);
+            }
+
+            confetti({
+                particleCount: 200,
+                spread: 100,
+                origin: {y: 0.6},
+                colors: ['#667eea', '#764ba2', '#f093fb', '#4facfe']
+            });
+        }
+    </script>
+</body>
+
+</html>

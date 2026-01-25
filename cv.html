@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeyondTheBugs - CV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="Logo/bug.png">
+</head>
+<body>
+    <div id="codeBackground"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-bug"></i> BeyondTheBugs</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="cv.html">CV</a></li>
+                    <li class="nav-item"><a class="nav-link" href="bio.html">Bio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5">
+        <h1 class="text-center mb-4" style="color: white;">Curriculum Vitae</h1>
+        
+        <!-- Download CV Button -->
+        <div class="text-center mb-4">
+            <a href="CV/My_CV.pdf" download class="btn btn-success">
+                <i class="fas fa-download"></i> Download CV
+            </a>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5><i class="fas fa-user"></i> Novithan</h5>
+                        <p class="text-muted">QA Software Tester</p>
+                        <hr>
+                        <p><i class="fas fa-envelope"></i> naidoonovithan@gmail.com</p>
+                        <p><i class="fas fa-envelope"></i> randyn619@gmail.com</p>
+                        <p><i class="fas fa-phone"></i> +27 62 082 9186</p>
+                        <p><i class="fas fa-map-marker-alt"></i> South Africa</p>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5>Skills</h5>
+                        <ul>
+                            <li>Leadership</li>
+                            <li>Problem-Solving Skills</li>
+                            <li>Communication Skills</li>
+                            <li>Time Management</li>
+                            <li>Teamwork and Collaboration</li>
+                            <li>Programming Skills</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h3>About Me</h3>
+                        <p class="lead">Final-year BSc IT student passionate about software testing and quality assurance.</p>
+                    </div>
+                </div>
+                
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5><i class="fas fa-graduation-cap text-success"></i> Education</h5>
+                        <h6>BSc Information Technology</h6>
+                        <p class="text-muted">2024 - Present | 3rd Year</p>
+                        <p>Major: Software Testing</p>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5><i class="fas fa-certificate text-success"></i> Previous Education</h5>
+                        <h6>Higher Certificate Systems Development</h6>
+                        <p class="text-muted">2023</p>
+                        <p>Focus: Systems Development</p>
+                    </div>
+                </div>
+                
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5><i class="fas fa-certificate text-success"></i> Certifications</h5>
+                        <p><strong>Udemy Courses</strong></p>
+                        <ul>
+                            <li>Software Testing Fundamentals</li>
+                            <li>Quality Assurance Best Practices</li>
+                            <li>Real-world QA Testing</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5><i class="fas fa-bullseye text-success"></i> Career Goals</h5>
+                        <p>My goal is to grow into a dedicated software tester who values quality, precision, and continuous learning. I'm actively seeking opportunities to apply my testing knowledge in real-world scenarios.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer OUTSIDE container -->
+    <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center">
+                <p class="mb-0">&copy; <span id="year"></span> BeyondTheBugs | Novithan Naidoo</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

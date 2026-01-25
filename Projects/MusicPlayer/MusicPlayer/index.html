@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaveBeat</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+      <div class="container">
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search for songs, artists...">
+                <button class="search-btn" id="searchBtn">Search</button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+
+        <div class="player">
+            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&h=500&fit=crop" alt="Album Art" class="album-art" id="albumArt">
+            
+            <div class="song-info">
+                <div class="song-title" id="songTitle">Select a Song</div>
+                <div class="song-artist" id="songArtist">Search and play music</div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-labels">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="shuffleBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M15.5 3.5L19 7l-3.5 3.5v-2h-2.25a4.25 4.25 0 00-3.031 1.266L9 11l1.219 1.234A4.25 4.25 0 0013.25 13.5h2.25v-2L19 15l-3.5 3.5v-2h-2.25a6.75 6.75 0 01-4.828-2.016L7 13l-1.422 1.484A4.25 4.25 0 012.547 16H1v-2h1.547a2.25 2.25 0 001.516-.594L5.5 12l-1.437-1.406A4.25 4.25 0 002.547 9H1V7h1.547a6.75 6.75 0 014.031 1.516L8 9.999l1.422-1.483A4.25 4.25 0 0112.453 7h2.297v-3.5h.75z"/>
+                    </svg>
+                </button>
+                <button class="control-btn" id="prevBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 6h2v12H6V6zm3.5 6l8.5 6V6l-8.5 6z"/>
+                    </svg>
+                </button>
+                <div class="play-btn" id="playBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
+                <button class="control-btn" id="nextBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16 18h2V6h-2v12zm-11-7l8.5-6v12L5 11z"/>
+                    </svg>
+                </button>
+                <button class="control-btn" id="repeatBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M5.5 5L2 8.5 5.5 12V9h6.022a3 3 0 012.064.826L15.5 11.75v2.121l-1.914-1.914A5 5 0 0011.522 11H5.5V8zM14.5 15L18 11.5 14.5 8v3H8.478a3 3 0 01-2.064-.826L4.5 8.25V6.129l1.914 1.914A5 5 0 008.478 9H14.5v3z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="bottom-controls">
+                <button class="like-btn" id="likeBtn">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                    </svg>
+                </button>
+                <div class="volume-control">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="70">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+</body>
+</html>

@@ -1,0 +1,367 @@
+/* === ANIMATED CODE BACKGROUND === */
+#codeBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    overflow: hidden;
+}
+
+#codeBackground::before,
+#codeBackground::after {
+    content: '';
+    position: absolute;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: rgba(40, 167, 69, 0.3);
+    white-space: pre;
+    animation: floatCode 20s linear infinite;
+}
+
+#codeBackground::before {
+    content: 'if(bug.found()) {\n  fix();\n}\ntest.run();\n// Quality First\nwhile(testing) {\n  verify();\n}';
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+#codeBackground::after {
+    content: 'function testQA() {\n  assert(true);\n}\n<bug>fixed</bug>\nconsole.log("QA");\nfor(i=0; i<tests; i++)';
+    top: 60%;
+    right: 5%;
+    animation-delay: 10s;
+}
+
+@keyframes floatCode {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+    50% { opacity: 0.5; }
+    100% { transform: translateY(-100px) rotate(5deg); opacity: 0; }
+}
+
+.code-bug {
+    position: absolute;
+    color: rgba(40, 167, 69, 0.4);
+    font-size: 24px;
+    animation: floatBug 15s ease-in-out infinite;
+}
+
+@keyframes floatBug {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(50px, -50px) rotate(90deg); }
+    50% { transform: translate(0, -100px) rotate(180deg); }
+    75% { transform: translate(-50px, -50px) rotate(270deg); }
+}
+
+/* === GENERAL STYLES === */
+body {
+    padding-top: 70px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #28a745 !important;
+}
+
+/* === HERO SECTION === */
+.hero-section {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+    text-align: center;
+    position: relative;
+}
+
+.hero-section h1, .hero-section h2, .hero-section h3, .hero-section p {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    animation: fadeInUp 1s ease-out;
+}
+
+.animate-fade {
+    animation: fadeInUp 1.2s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === BUG GAME === */
+.game-stats {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#gameArea {
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border: 4px solid #28a745;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair;
+}
+
+.bug {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: transparent !important; /* Remove black circle */
+    border-radius: 0; /* Remove circle shape */
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: bugWiggle 0.5s infinite;
+    font-size: 40px; /* Make bugs bigger */
+}
+
+.bug::before {
+    content: ''; /* Remove default bug */
+}
+
+.bug:hover {
+    transform: scale(1.2);
+}
+
+@keyframes bugWiggle {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+.splat {
+    position: absolute;
+    width: 100x;
+    height: 100px;
+    background: radial-gradient(circle, #ff0000 0%, #8b0000 30%, #28a745 60%, transparent 80%);
+    border-radius: 50%;
+    animation: splatEffect 0.6s forwards;
+    pointer-events: none;
+}
+
+@keyframes splatEffect {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0.3; /* Stays visible longer */
+    }
+}
+.score-popup {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+    animation: scoreFloat 1s forwards;
+    pointer-events: none;
+}
+
+@keyframes scoreFloat {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    text-align: center;
+    z-index: 10;
+}
+
+/* === CARDS === */
+.card {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+}
+
+/* === BUTTONS === */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    transition: all 0.3s;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+}
+
+/* === FOOTER === */
+footer {
+    background-color: #212529 !important;
+    width: 100% !important;
+}
+
+footer h5 {
+    color: white !important;
+    font-weight: bold;
+}
+
+footer p,
+footer a {
+    color: #adb5bd !important;
+}
+
+footer a:hover {
+    color: #28a745 !important;
+}
+
+/* Make sure links are visible */
+footer .text-muted {
+    color: #ffffff !important;
+}
+
+footer .d-block {
+    color: #ffffff !important;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    #gameArea {
+        height: 300px;
+    }
+    
+    .hero-section {
+        min-height: 50vh;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+}
+/* === PROFILE IMAGE === */
+.profile-img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #28a745;
+    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+    transition: transform 0.3s;
+}
+
+.profile-img:hover {
+    transform: scale(1.05);
+}
+
+/* Make About Me heading white */
+h1.text-center.mb-5 {
+    color: #fff;
+}
+
+/* === GREEN GLOW EFFECT FOR NAVBAR LOGO === */
+.navbar-brand {
+    text-shadow: 0 0 10px #28a745, 0 0 20px #28a745, 0 0 30px #28a745;
+    animation: logoGlow 2s ease-in-out infinite;
+    transition: all 0.3s;
+}
+
+.navbar-brand:hover {
+    text-shadow: 0 0 15px #39ff14, 0 0 30px #39ff14, 0 0 45px #39ff14;
+}
+
+.navbar-brand i {
+    text-shadow: 0 0 10px #28a745, 0 0 20px #28a745, 0 0 30px #28a745;
+}
+
+@keyframes logoGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px #28a745, 0 0 20px #28a745, 0 0 30px #28a745;
+    }
+    50% {
+        text-shadow: 0 0 20px #39ff14, 0 0 40px #39ff14, 0 0 60px #39ff14;
+    }
+}
+/* === CERTIFICATION BADGES === */
+.cert-badge {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 10px;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.cert-badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+}
+/* === PROJECT CARD HOVER EFFECTS === */
+.card {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+}
+
+.card:hover {
+    transform: scale(1.08) translateY(-10px);
+    box-shadow: 0 0 20px #28a745, 0 0 40px #28a745, 0 5px 30px rgba(40, 167, 69, 0.5);
+    border: 2px solid #28a745;
+}
+
+/* Project card title color on hover */
+.card:hover .card-title {
+    color: #28a745;
+}
+
+/* Make project images grow too if they exist */
+.card:hover img {
+    transform: scale(1.1);
+}
+
+.card img {
+    transition: transform 0.3s ease;
+}

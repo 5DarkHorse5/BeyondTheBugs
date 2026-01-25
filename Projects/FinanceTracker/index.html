@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Tracker</title>
+<style>
+* { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+body { margin:0; min-height:100vh; background: linear-gradient(135deg,#16a34a,#065f46); color:#1e293b; }
+
+/* HEADER */
+header { background:white; padding:20px; position:sticky; top:0; z-index:10; }
+.header-inner { max-width:1100px; margin:auto; display:flex; align-items:center; justify-content:space-between; }
+h1 { margin:0; }
+.stats { display:flex; gap:30px; }
+.stat { text-align:center; }
+.stat span { display:block; font-size:12px; color:#64748b; }
+.stat strong { font-size:20px; }
+.add-btn { padding:10px 20px; background:#16a34a; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; }
+
+/* MAIN */
+main { max-width:1100px; margin:30px auto; padding:0 15px; }
+.empty { text-align:center; color:white; margin-top:100px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+
+/* DEBT CARD */
+.card { background:white; border-radius:15px; overflow:hidden; }
+.card-header { background:#065f46; color:white; padding:15px; display:flex; justify-content:space-between; align-items:center; }
+.delete, .done-btn { background:#ef4444; border:none; color:white; padding:6px 10px; border-radius:6px; cursor:pointer; font-weight:bold; }
+.done-btn { background:#10b981; }
+.card-body { padding:15px; }
+.stat-box { display:flex; justify-content:space-between; margin-bottom:6px; font-size:14px; }
+
+/* PAYMENTS */
+.payments { border-top:1px solid #e2e8f0; padding:15px; }
+.payment { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.payment.paid { color:green; }
+
+/* MODAL */
+.modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; }
+.modal.active { display:flex; }
+.modal-box { background:white; padding:25px; border-radius:15px; width:90%; max-width:400px; }
+.modal-box h2 { margin-top:0; }
+.modal-box input { width:100%; padding:10px; margin-bottom:12px; }
+.modal-actions { display:flex; justify-content:space-between; }
+.modal-actions button { padding:10px 15px; border:none; border-radius:8px; cursor:pointer; }
+.cancel { background:#94a3b8; color:white; }
+.save { background:#10b981; color:white; }
+
+.add-month { margin-top:10px; background:#22c55e; color:white; border:none; border-radius:6px; cursor:pointer; padding:6px 10px; font-weight:bold; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="header-inner">
+<h1>Finance Tracker</h1>
+<div class="stats">
+    <div class="stat"><span>Total Remaining</span><strong id="totalRemaining">R0.00</strong></div>
+    <div class="stat"><span>Total Paid</span><strong id="totalPaid">R0.00</strong></div>
+</div>
+<button class="add-btn" id="openModal">Add Debt</button>
+</div>
+</header>
+
+<main>
+<div id="debts" class="grid"></div>
+<div id="empty" class="empty">Click "Add Debt" to start</div>
+</main>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-box">
+<h2>Add Debt</h2>
+<input id="name" placeholder="Debt name">
+<input id="amount" type="number" placeholder="Total amount">
+<input id="monthly" type="number" placeholder="Monthly payment">
+<div class="modal-actions">
+<button class="cancel" id="closeModal">Cancel</button>
+<button class="save" id="saveDebt">Add</button>
+</div>
+</div>
+</div>
+
+<script>
+let debts = JSON.parse(localStorage.getItem('debts')) || [];
+const modal = document.getElementById('modal');
+const debtsDiv = document.getElementById('debts');
+const empty = document.getElementById('empty');
+
+// Open/close modal
+document.getElementById('openModal').onclick = () => modal.classList.add('active');
+document.getElementById('closeModal').onclick = () => modal.classList.remove('active');
+
+// Add new debt
+document.getElementById('saveDebt').onclick = () => {
+    const name = document.getElementById('name').value.trim();
+    const total = +document.getElementById('amount').value;
+    const monthly = +document.getElementById('monthly').value;
+    if (!name || total <= 0 || monthly <= 0) { 
+        alert('Invalid input'); 
+        return; 
+    }
+
+    const payments = [];
+    const count = Math.ceil(total / monthly);
+
+    // Start from next month
+    const today = new Date();
+    const startMonth = today.getMonth() + 1; // next month
+    const startYear = today.getFullYear() + Math.floor(startMonth / 12);
+    const firstMonthIndex = startMonth % 12;
+
+    for (let i = 0; i < count; i++) {
+        const month = firstMonthIndex + i;
+        const year = startYear + Math.floor(month / 12);
+        const monthIndex = month % 12;
+
+        const d = new Date(year, monthIndex, 1);
+        payments.push({
+            label: d.toLocaleString('default', { month: 'short', year: 'numeric' }),
+            amount: i === count - 1 ? +(total - monthly * (count - 1)).toFixed(2) : monthly,
+            paid: false
+        });
+    }
+
+    debts.push({ id: Date.now(), name, total, monthly, payments });
+    save(); 
+    modal.classList.remove('active'); 
+    render();
+};
+
+// Save to localStorage
+function save(){ 
+    localStorage.setItem('debts', JSON.stringify(debts)); 
+}
+
+// Render debts
+function render(){
+    debtsDiv.innerHTML = ''; 
+    empty.style.display = debts.length ? 'none' : 'block';
+    let totalPaid = 0, totalRemaining = 0;
+
+    debts.forEach(debt => {
+        let paid = debt.payments.reduce((sum, p) => sum + (p.paid ? p.amount : 0), 0);
+        let remaining = debt.total - paid;
+        totalPaid += paid; 
+        totalRemaining += remaining;
+
+        const card = document.createElement('div'); 
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="card-header">
+                <strong>${debt.name}</strong>
+                <button class="done-btn">Done</button>
+                <button class="delete">Delete</button>
+            </div>
+            <div class="card-body">
+                <div class="stat-box"><span>Total</span><span>R${debt.total.toFixed(2)}</span></div>
+                <div class="stat-box"><span>Monthly</span><span>R${debt.monthly.toFixed(2)}</span></div>
+                <div class="stat-box"><span>Paid</span><span>R${paid.toFixed(2)}</span></div>
+                <div class="stat-box"><span>Remaining</span><span>R${remaining.toFixed(2)}</span></div>
+            </div>
+            <div class="payments"></div>
+            <button class="add-month">+ Add Month</button>
+        `;
+
+        const paymentsDiv = card.querySelector('.payments');
+
+        debt.payments.forEach((p, i) => {
+            const row = document.createElement('div'); 
+            row.className = 'payment' + (p.paid ? ' paid' : '');
+
+            row.innerHTML = `
+                <label>
+                    <input type="checkbox" ${p.paid ? 'checked' : ''}> ${p.label}
+                </label>
+                <span>R${p.amount.toFixed(2)}</span>
+                <button class="delete-month" style="margin-left:10px;padding:2px 6px;background:#ef4444;color:white;border:none;border-radius:4px;cursor:pointer;">X</button>
+            `;
+
+            // Toggle paid
+            row.querySelector('input').onchange = e => { 
+                p.paid = e.target.checked; 
+                save(); 
+                render(); 
+            };
+
+            // Delete month
+            row.querySelector('.delete-month').onclick = () => {
+                {
+                    debt.payments.splice(i, 1);
+                    save();
+                    render();
+                }
+            };
+
+            paymentsDiv.appendChild(row);
+        });
+
+        // Done button
+        card.querySelector('.done-btn').onclick = () => {
+            {
+                debts = debts.filter(d => d.id !== debt.id); 
+                save(); 
+                render();
+            }
+        };
+
+        // Delete debt button
+        card.querySelector('.delete').onclick = () => {
+            {
+                debts = debts.filter(d => d.id !== debt.id); 
+                save(); 
+                render();
+            }
+        };
+
+        // Add Month button
+        card.querySelector('.add-month').onclick = () => {
+            const lastPayment = debt.payments[debt.payments.length - 1];
+            const lastDate = new Date(lastPayment.label);
+            lastDate.setMonth(lastDate.getMonth() + 1);
+            debt.payments.push({
+                label: lastDate.toLocaleString('default', { month: 'short', year: 'numeric' }),
+                amount: debt.monthly, 
+                paid: false
+            });
+            save(); 
+            render();
+        };
+
+        debtsDiv.appendChild(card);
+    });
+
+    document.getElementById('totalPaid').textContent = 'R' + totalPaid.toFixed(2);
+    document.getElementById('totalRemaining').textContent = 'R' + totalRemaining.toFixed(2);
+}
+
+// Initial render
+render();
+</script>
+
+</body>
+</html>

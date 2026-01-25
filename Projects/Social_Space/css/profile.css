@@ -1,0 +1,301 @@
+/* Profile header container with rounded corners and shadow */
+.profile-header {
+    background: var(--bg-light);
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Cover photo area at the top (green gradient background) */
+.profile-cover {
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    position: relative;
+}
+
+/* Container for profile info below the cover photo */
+.profile-info-section {
+    padding: 0 30px 30px;
+    position: relative;
+}
+
+/* Container that holds the profile picture */
+.profile-picture-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: -75px auto 20px; /* Negative margin pulls it up over the cover photo */
+}
+
+/* The actual profile picture (circular) */
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* Makes it circular */
+    border: 5px solid var(--bg-light);
+    object-fit: cover; /* Makes sure image fits nicely */
+    display: block;
+}
+
+/* Small camera button on profile picture */
+.edit-profile-pic {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Makes it circular */
+    background: var(--primary-green);
+    border: 3px solid var(--bg-light);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease; /* Smooth animation */
+}
+
+/* When hovering over the camera button */
+.edit-profile-pic:hover {
+    background: var(--dark-green);
+    transform: scale(1.1); /* Makes it slightly bigger */
+}
+
+/* Container for name, bio, stats (centered text) */
+.profile-details {
+    text-align: center;
+}
+
+/* User's full name */
+.profile-details h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+    color: var(--text-light);
+}
+
+/* Username with @ symbol */
+.username-text {
+    color: var(--text-gray);
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Bio text */
+.bio-text {
+    color: var(--text-light);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Stats box showing posts and friends count */
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(16, 185, 129, 0.05);
+    border-radius: 10px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Each individual stat (posts or friends) */
+.stat-item {
+    display: flex;
+    flex-direction: column; /* Stack number above label */
+    align-items: center;
+}
+
+/* The big number (like "25") */
+.stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-green);
+}
+
+/* The label (like "Posts" or "Friends") */
+.stat-label {
+    font-size: 14px;
+    color: var(--text-gray);
+    margin-top: 5px;
+}
+
+/* Edit profile button */
+.btn-edit-profile {
+    padding: 12px 30px;
+    background: var(--primary-green);
+    border: none;
+    border-radius: 25px; /* Rounded pill shape */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+/* When hovering over edit profile button */
+.btn-edit-profile:hover {
+    background: var(--dark-green);
+    transform: translateY(-2px); /* Lifts up slightly */
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+}
+
+/* Container for action buttons (Message, Unfriend, Add Friend) */
+.profile-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Secondary button style (transparent with border) */
+.btn-secondary {
+    padding: 12px 30px;
+    background: transparent;
+    border: 2px solid var(--primary-green);
+    border-radius: 25px;
+    color: var(--primary-green);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* When hovering over secondary button */
+.btn-secondary:hover {
+    background: var(--primary-green);
+    color: white;
+}
+
+/* When button is disabled (like "Request Sent") */
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Container for posts section */
+.profile-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* "Posts" section title */
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--primary-green);
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Message shown when user has no posts */
+.no-posts {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--bg-light);
+    border-radius: 15px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Text inside no posts message */
+.no-posts p {
+    color: var(--text-gray);
+    font-size: 18px;
+}
+
+/* Each form field group (label + input) */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Form field labels */
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* Text inputs and textareas */
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid rgba(16, 185, 129, 0.3);
+    border-radius: 8px;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 15px;
+    font-family: inherit;
+}
+
+/* When input is focused (clicked on) */
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-green);
+}
+
+/* File upload inputs */
+.form-group input[type="file"] {
+    color: var(--text-light);
+    padding: 10px 0;
+}
+
+/* Small helper text under inputs */
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: var(--text-gray);
+    font-size: 13px;
+}
+
+/* Make profile look good on phones and tablets */
+@media (max-width: 768px) {
+    /* Shorter cover photo on mobile */
+    .profile-cover {
+        height: 150px;
+    }
+    
+    /* Smaller profile picture on mobile */
+    .profile-picture-container {
+        width: 120px;
+        height: 120px;
+        margin: -60px auto 20px;
+    }
+    
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+    }
+    
+    /* Smaller name text on mobile */
+    .profile-details h1 {
+        font-size: 24px;
+    }
+    
+    /* Less space between stats on mobile */
+    .profile-stats {
+        gap: 20px;
+    }
+    
+    /* Stack buttons vertically on mobile */
+    .profile-actions {
+        flex-direction: column;
+    }
+    
+    /* Make buttons full width on mobile */
+    .profile-actions button {
+        width: 100%;
+    }
+}
