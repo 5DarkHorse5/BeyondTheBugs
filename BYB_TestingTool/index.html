@@ -1036,31 +1036,49 @@ function openCaseModal(id){
 }
 
 function saveCase(){
-  const title=document.getElementById('cTitle').value.trim();if(!title)return;
-  const data={title,project:parseInt(document.getElementById('cProj').value)||1,
-    priority:document.getElementById('cPri').value,status:document.getElementById('cStat').value,
-    cat:document.getElementById('cCat').value,desc:document.getElementById('cDesc').value.trim(),
-    pre:document.getElementById('cPre').value.trim(),steps:document.getElementById('cSteps').value.trim(),
-    exp:document.getElementById('cExp').value.trim(),date:new Date().toISOString().split('T')[0],ai:false};
+
+  const title=document.getElementById('cTitle').value.trim();
+  if(!title)return;
+
+  const data={
+    title,
+    project:parseInt(document.getElementById('cProj').value)||1,
+    priority:document.getElementById('cPri').value,
+    status:document.getElementById('cStat').value,
+    cat:document.getElementById('cCat').value,
+    desc:document.getElementById('cDesc').value.trim(),
+    pre:document.getElementById('cPre').value.trim(),
+    steps:document.getElementById('cSteps').value.trim(),
+    exp:document.getElementById('cExp').value.trim(),
+    date:new Date().toISOString().split('T')[0],
+    ai:false
+  };
+
   if(editCase){
+
     const i=store.cases.findIndex(c=>c.id===editCase);
+
     store.cases[i]={...store.cases[i],...data};
+
     toast('Test case updated ✓','#16a34a');
+
   }else{
-    store.cases.push({id:store.nextId.case++,boardCol:'draft',...data});
+
+    store.cases.push({
+      id:store.nextId.case++,
+      boardCol:'draft',
+      ...data
+    });
+
     toast('Test case saved ✓','#16a34a');
   }
-  editCase=null;saveStore();closeModal('caseModal');renderCases();renderDash();
-}
 
-function delCase(id){
-  if(!confirm('Move to trash?'))return;
-  const c=store.cases.find(x=>x.id===id);
-  store.trash.push({...c,deletedAt:new Date().toISOString()});
-  store.cases=store.cases.filter(x=>x.id!==id);
-  saveStore();renderCases();renderDash();renderBoards();toast('Moved to trash','#f97316');
+  editCase=null;
+  saveStore();
+  closeModal('caseModal');
+  renderCases();
+  renderDash();
 }
-
 // ── TEST RUNS ──
 function renderRuns(){
   fillProjSel('rProj');
