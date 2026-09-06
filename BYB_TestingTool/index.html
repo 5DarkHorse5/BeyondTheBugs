@@ -424,34 +424,23 @@
 <main class="main">
   <!-- TOPBAR -->
  <div class="topbar">
-  <div class="page-title" id="pageTitle">
-    <i class="fas fa-th-large" style="color:var(--green);font-size:14px"></i>
-    Dashboard
-  </div>
-
-  <div class="topbar-right">
-
-    <div class="trello-badge" id="trelloBadge">
-      <div class="trello-dot" style="background:var(--yellow)"></div>
-      Connecting...
+    <div class="page-title" id="pageTitle">
+      <i class="fas fa-th-large" style="color:var(--green);font-size:14px"></i> Dashboard
     </div>
-
-    <div class="search-wrap">
-      <i class="fas fa-search" style="color:var(--text-light);font-size:11px"></i>
-      <input
-        type="text"
-        placeholder="Search test cases..."
-        id="globalSearch"
-        oninput="filterCases()"
-      >
+    <div class="topbar-right">
+      <div class="trello-badge" id="trelloBadge">
+        <div class="trello-dot" style="background:var(--yellow)"></div>
+        Connecting...
+      </div>
+      <div class="search-wrap">
+        <i class="fas fa-search" style="color:var(--text-light);font-size:11px"></i>
+        <input type="text" placeholder="Search test cases..." id="globalSearch" oninput="filterCases()">
+      </div>
+      <button class="btn btn-green" onclick="openAI()">
+        <i class="fas fa-magic"></i> Generate with AI
+      </button>
     </div>
-
-    <button class="btn btn-green" onclick="openAI()">
-      <i class="fas fa-magic"></i> Generate with AI
-    </button>
-
   </div>
-</div>
   <!-- PAGES -->
   <div class="content">
 
