@@ -680,45 +680,96 @@
 <!-- TEST CASE MODAL -->
 <div class="overlay" id="caseModal" onclick="closeOut('caseModal',event)">
   <div class="modal modal-lg">
-    <div class="modal-hd"><h2 id="caseMT">New Test Case</h2><button class="modal-x" onclick="closeModal('caseModal')">✕</button></div>
-    <div class="fg"><label class="fl">Title *</label><input class="fi" id="cTitle" placeholder="Test case title"></div>
+
+    <div class="modal-hd">
+      <h2 id="caseMT">New Test Case</h2>
+      <button class="modal-x" onclick="closeModal('caseModal')">✕</button>
+    </div>
+
+    <div class="fg">
+      <label class="fl">ID *</label>
+      <input class="fi" id="cId" placeholder="Test case ID">
+    </div>
+
+    <div class="fg">
+      <label class="fl">Title *</label>
+      <input class="fi" id="cTitle" placeholder="Test case title">
+    </div>
+
     <div class="fr">
-      <div class="fg"><label class="fl">Project</label><select class="fs" id="cProj"></select></div>
-      <div class="fg"><label class="fl">Priority</label>
-        <select class="fs" id="cPri">
+
+      <div class="fg">
+        <label class="fl">Layer</label>
+        <select class="fs" id="cLayer">
+          <option value="functional">Functional</option>
+          <option value="ui">UI</option>
+          <option value="api">API</option>
+          <option value="performance">Performance</option>
+          <option value="security">Security</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label class="fl">Priority</label>
+        <select class="fs" id="cPriority">
           <option value="critical">Critical</option>
           <option value="high">High</option>
           <option value="medium" selected>Medium</option>
           <option value="low">Low</option>
         </select>
       </div>
+
     </div>
+
     <div class="fr">
-      <div class="fg"><label class="fl">Status</label>
-        <select class="fs" id="cStat">
+
+      <div class="fg">
+        <label class="fl">Status</label>
+        <select class="fs" id="cStatus">
           <option value="draft">Draft</option>
+          <option value="ready">Ready</option>
           <option value="approved">Approved</option>
           <option value="failed">Failed</option>
         </select>
       </div>
-      <div class="fg"><label class="fl">Category</label>
-        <select class="fs" id="cCat">
-          <option value="functional">Functional</option>
-          <option value="ui">UI</option>
-          <option value="end-to-end (e2e)">End-to-End (E2E)</option>
-          <option value="regression">Regression</option>
-          <option value="integration">Integration</option>
-        </select>
+
+      <div class="fg">
+        <label class="fl">Date</label>
+        <input class="fi" type="date" id="cDate">
       </div>
+
     </div>
-    <div class="fg"><label class="fl">Description</label><input class="fi" id="cDesc" placeholder="Brief description of what this test verifies"></div>
-    <div class="fg"><label class="fl">Preconditions</label><input class="fi" id="cPre" placeholder="What must be true before running this test"></div>
-    <div class="fg"><label class="fl">Test Steps</label><textarea class="ft" id="cSteps" placeholder="1. Navigate to login&#10;2. Enter valid credentials&#10;3. Click Login"></textarea></div>
-    <div class="fg"><label class="fl">Expected Result</label><textarea class="ft" id="cExp" style="min-height:55px" placeholder="What should happen?"></textarea></div>
+
+    <div class="fg">
+      <label class="fl">Description</label>
+      <input class="fi" id="cDescription" placeholder="Brief description of what this test verifies">
+    </div>
+
+    <div class="fg">
+      <label class="fl">Preconditions</label>
+      <input class="fi" id="cPreconditions" placeholder="What must be true before running this test">
+    </div>
+
+    <div class="fg">
+      <label class="fl">Steps</label>
+      <textarea class="ft" id="cSteps" placeholder="1. Navigate to login&#10;2. Enter valid credentials&#10;3. Click Login"></textarea>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Expected Result</label>
+      <textarea class="ft" id="cExpectedResult" style="min-height:55px" placeholder="What should happen?"></textarea>
+    </div>
+
+    <div class="fg">
+      <label class="fl">Tags</label>
+      <input class="fi" id="cTags" placeholder="low; ready; ui; 4 steps; 2026-09-06">
+    </div>
+
     <div class="mf">
       <button class="btn btn-outline" onclick="closeModal('caseModal')">Cancel</button>
       <button class="btn btn-green" onclick="saveCase()">Save Test Case</button>
     </div>
+
   </div>
 </div>
 
