@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BeyondTheBugs — Testing Tool</title>
-  <!-- <link rel="icon" type="image/png" href="Logo/bug.png"> -->
-  <link rel="icon" type="image/png" href="../Logo/bug.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="icon" type="image/png" href="Logo/bug.png">
 <style>
   :root {
     --green: #16a34a;
@@ -368,9 +367,11 @@
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-icon">🐛</div>
-    <div class="logo-text">BeyondTheBugs</div>
-  </div>
+    <!-- <div class="logo-icon">🐛</div>
+    <div class="logo-text">BeyondTheBugs</div> -->
+    <div class="logo-icon">
+    <img src="Logo/bug.png" alt="BeyondTheBugs Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 6px;">
+</div>
 
   <nav class="sidebar-nav">
     <div class="nav-section">
@@ -423,7 +424,7 @@
 <!-- MAIN -->
 <main class="main">
   <!-- TOPBAR -->
- <div class="topbar">
+  <div class="topbar">
     <div class="page-title" id="pageTitle">
       <i class="fas fa-th-large" style="color:var(--green);font-size:14px"></i> Dashboard
     </div>
@@ -441,6 +442,7 @@
       </button>
     </div>
   </div>
+
   <!-- PAGES -->
   <div class="content">
 
@@ -513,9 +515,9 @@
             <option value="">All Categories</option>
             <option value="functional">Functional</option>
             <option value="ui">UI</option>
-            <option value="end-to-end (e2e)">End-to-End (E2E)</option>
-            <option value="regression">Regression</option>
-            <option value="integration">Integration</option>
+            <option value="api">API</option>
+            <option value="performance">Performance</option>
+            <option value="security">Security</option>
           </select>
         </div>
         <div class="cards-grid" id="casesGrid"></div>
@@ -633,12 +635,12 @@
     <div class="fr">
       <div class="fg"><label class="fl">Test Type</label>
         <select class="fs" id="aiType">
-          <option value="manual">Manual Test Cases</option>
-          <option value="regression">Regression Checklist</option>
-          <option value="smoke">Smoke Test</option>
-          <option value="exploratory">Exploratory Testing</option>
-          <option value="api">API Test Cases</option>
-          <option value="security">Security Test Cases</option>
+          <option value="functional">Functional</option>
+          <option value="ui">UI</option>
+          <option value="end-to-end">End-to-End</option>
+          <option value="regression">Regression</option>
+          <option value="integration">Integration</option>
+          <option value="security">Security</option>
         </select>
       </div>
       <div class="fg"><label class="fl">Priority</label>
@@ -849,7 +851,7 @@
     drops.forEach((y,i)=>{
       const c=chars[Math.floor(Math.random()*chars.length)];
       ctx.fillText(c,i*16,y*16);
-      if(y*16>H&&Math.random()>2) drops[i]=0; // 0.975
+      if(y*16>H&&Math.random()>0.975) drops[i]=0;
       drops[i]++;
     });
   }
@@ -1067,7 +1069,6 @@ function openCaseModal(id){
   document.getElementById('caseMT').textContent=editCase?'Edit Test Case':'New Test Case';
   if(editCase){
     const c=store.cases.find(x=>x.id===editCase);
-    document.getElementById('cId').value=c.id;
     document.getElementById('cTitle').value=c.title;
     document.getElementById('cProj').value=c.project;
     document.getElementById('cPri').value=c.priority;
@@ -1087,49 +1088,31 @@ function openCaseModal(id){
 }
 
 function saveCase(){
-
-  const title=document.getElementById('cTitle').value.trim();
-  if(!title)return;
-
-  const data={
-    title,
-    project:parseInt(document.getElementById('cProj').value)||1,
-    priority:document.getElementById('cPri').value,
-    status:document.getElementById('cStat').value,
-    cat:document.getElementById('cCat').value,
-    desc:document.getElementById('cDesc').value.trim(),
-    pre:document.getElementById('cPre').value.trim(),
-    steps:document.getElementById('cSteps').value.trim(),
-    exp:document.getElementById('cExp').value.trim(),
-    date:new Date().toISOString().split('T')[0],
-    ai:false
-  };
-
+  const title=document.getElementById('cTitle').value.trim();if(!title)return;
+  const data={title,project:parseInt(document.getElementById('cProj').value)||1,
+    priority:document.getElementById('cPri').value,status:document.getElementById('cStat').value,
+    cat:document.getElementById('cCat').value,desc:document.getElementById('cDesc').value.trim(),
+    pre:document.getElementById('cPre').value.trim(),steps:document.getElementById('cSteps').value.trim(),
+    exp:document.getElementById('cExp').value.trim(),date:new Date().toISOString().split('T')[0],ai:false};
   if(editCase){
-
     const i=store.cases.findIndex(c=>c.id===editCase);
-
     store.cases[i]={...store.cases[i],...data};
-
     toast('Test case updated ✓','#16a34a');
-
   }else{
-
-    store.cases.push({
-      id:store.nextId.case++,
-      boardCol:'draft',
-      ...data
-    });
-
+    store.cases.push({id:store.nextId.case++,boardCol:'draft',...data});
     toast('Test case saved ✓','#16a34a');
   }
-
-  editCase=null;
-  saveStore();
-  closeModal('caseModal');
-  renderCases();
-  renderDash();
+  editCase=null;saveStore();closeModal('caseModal');renderCases();renderDash();
 }
+
+function delCase(id){
+  if(!confirm('Move to trash?'))return;
+  const c=store.cases.find(x=>x.id===id);
+  store.trash.push({...c,deletedAt:new Date().toISOString()});
+  store.cases=store.cases.filter(x=>x.id!==id);
+  saveStore();renderCases();renderDash();renderBoards();toast('Moved to trash','#f97316');
+}
+
 // ── TEST RUNS ──
 function renderRuns(){
   fillProjSel('rProj');
