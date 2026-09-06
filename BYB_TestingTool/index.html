@@ -423,35 +423,35 @@
 <!-- MAIN -->
 <main class="main">
   <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="page-title" id="pageTitle">
-      <i class="fas fa-th-large" style="color:var(--green);font-size:14px"></i> Dashboard
+ <div class="topbar">
+  <div class="page-title" id="pageTitle">
+    <i class="fas fa-th-large" style="color:var(--green);font-size:14px"></i>
+    Dashboard
+  </div>
+
+  <div class="topbar-right">
+
+    <div class="trello-badge" id="trelloBadge">
+      <div class="trello-dot" style="background:var(--yellow)"></div>
+      Connecting...
     </div>
-    <div class="topbar-right">
-      <div class="trello-badge" id="trelloBadge">
-        <div class="trello-dot" style="background:var(--yellow)"></div>
-        Connecting...
-      </div>
-      <div class="search-wrap">
-        <i class="fas fa-search" style="color:var(--text-light);font-size:11px"></i>
-        <input type="text" placeholder="Search test cases..." id="globalSearch" oninput="filterCases()">
-      </div>
+
+    <div class="search-wrap">
+      <i class="fas fa-search" style="color:var(--text-light);font-size:11px"></i>
+      <input
+        type="text"
+        placeholder="Search test cases..."
+        id="globalSearch"
+        oninput="filterCases()"
+      >
+    </div>
+
     <button class="btn btn-green" onclick="openAI()">
-  <i class="fas fa-magic"></i> Generate with AI
-</button>
+      <i class="fas fa-magic"></i> Generate with AI
+    </button>
 
-<button class="btn btn-outline" onclick="document.getElementById('jsonFileInput').click()">
-  <i class="fas fa-file-import"></i> Import JSON
-</button>
-
-<input
-  type="file"
-  id="jsonFileInput"
-  accept=".json,application/json"
-  style="display:none"
-  onchange="importTestCasesJSON(event)"
->
-
+  </div>
+</div>
   <!-- PAGES -->
   <div class="content">
 
