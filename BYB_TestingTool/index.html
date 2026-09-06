@@ -439,6 +439,17 @@
       <button class="btn btn-green" onclick="openAI()">
         <i class="fas fa-magic"></i> Generate with AI
       </button>
+      <button class="btn btn-outline" onclick="document.getElementById('jsonFileInput').click()">
+  Import JSON
+</button>
+
+<input
+  type="file"
+  id="jsonFileInput"
+  accept=".json,application/json"
+  style="display:none"
+  onchange="importTestCasesJSON(event)"
+>
     </div>
   </div>
 
