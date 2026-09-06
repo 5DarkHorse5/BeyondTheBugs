@@ -309,6 +309,9 @@
     background: var(--white); border-radius: 14px; width: 100%;
     padding: 26px; transform: translateY(8px); transition: transform 0.2s;
     box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    box-sizing: border-box;
   }
   .overlay.open .modal { transform: translateY(0); }
   .modal-sm { max-width: 480px; }
@@ -366,13 +369,6 @@
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <!-- <div class="logo-icon">🐛</div>
-    <div class="logo-text">BeyondTheBugs</div> -->
-    <div class="logo-icon">
-    <img src="Logo/bug.png" alt="BeyondTheBugs Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 6px;">
-</div>
-
   <nav class="sidebar-nav">
     <div class="nav-section">
       <div class="nav-item active" id="nav-dashboard" onclick="goTo('dashboard',this)">
@@ -415,7 +411,6 @@
 
   <div class="sidebar-bottom">
     <a href="https://beyondthebugs.netlify.app" target="_blank" class="bug-back">
-      <span class="bug-back-icon">🐛</span>
       Back to Beyond the Bugs
     </a>
   </div>
@@ -682,26 +677,13 @@
 <!-- TEST CASE MODAL -->
 <div class="overlay" id="caseModal" onclick="closeOut('caseModal',event)">
   <div class="modal modal-lg">
+    <div class="modal-hd"><h2 id="caseMT">New Test Case</h2><button class="modal-x" onclick="closeModal('caseModal')">✕</button></div>
 
-    <div class="modal-hd">
-      <h2 id="caseMT">New Test Case</h2>
-      <button class="modal-x" onclick="closeModal('caseModal')">✕</button>
-    </div>
-
-    <div class="fg">
-      <label class="fl">ID *</label>
-      <input class="fi" id="cId" placeholder="Test case ID">
-    </div>
-
-    <div class="fg">
-      <label class="fl">Title *</label>
-      <input class="fi" id="cTitle" placeholder="Test case title">
-    </div>
+    <div class="fg"><label class="fl">ID *</label><input class="fi" id="cId" placeholder="e.g. TC-06"></div>
+    <div class="fg"><label class="fl">Title *</label><input class="fi" id="cTitle" placeholder="Test case title"></div>
 
     <div class="fr">
-
-      <div class="fg">
-        <label class="fl">Layer</label>
+      <div class="fg"><label class="fl">Layer</label>
         <select class="fs" id="cLayer">
           <option value="functional">Functional</option>
           <option value="ui">UI</option>
@@ -710,9 +692,7 @@
           <option value="security">Security</option>
         </select>
       </div>
-
-      <div class="fg">
-        <label class="fl">Priority</label>
+      <div class="fg"><label class="fl">Priority</label>
         <select class="fs" id="cPriority">
           <option value="critical">Critical</option>
           <option value="high">High</option>
@@ -720,13 +700,10 @@
           <option value="low">Low</option>
         </select>
       </div>
-
     </div>
 
     <div class="fr">
-
-      <div class="fg">
-        <label class="fl">Status</label>
+      <div class="fg"><label class="fl">Status</label>
         <select class="fs" id="cStatus">
           <option value="draft">Draft</option>
           <option value="ready">Ready</option>
@@ -734,44 +711,21 @@
           <option value="failed">Failed</option>
         </select>
       </div>
-
-      <div class="fg">
-        <label class="fl">Date</label>
+      <div class="fg"><label class="fl">Date</label>
         <input class="fi" type="date" id="cDate">
       </div>
-
     </div>
 
-    <div class="fg">
-      <label class="fl">Description</label>
-      <input class="fi" id="cDescription" placeholder="Brief description of what this test verifies">
-    </div>
-
-    <div class="fg">
-      <label class="fl">Preconditions</label>
-      <input class="fi" id="cPreconditions" placeholder="What must be true before running this test">
-    </div>
-
-    <div class="fg">
-      <label class="fl">Steps</label>
-      <textarea class="ft" id="cSteps" placeholder="1. Navigate to login&#10;2. Enter valid credentials&#10;3. Click Login"></textarea>
-    </div>
-
-    <div class="fg">
-      <label class="fl">Expected Result</label>
-      <textarea class="ft" id="cExpectedResult" style="min-height:55px" placeholder="What should happen?"></textarea>
-    </div>
-
-    <div class="fg">
-      <label class="fl">Tags</label>
-      <input class="fi" id="cTags" placeholder="low; ready; ui; 4 steps; 2026-09-06">
-    </div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" id="cDescription" placeholder="Brief description of what this test verifies"></div>
+    <div class="fg"><label class="fl">Preconditions</label><input class="fi" id="cPreconditions" placeholder="What must be true before running this test"></div>
+    <div class="fg"><label class="fl">Steps</label><textarea class="ft" id="cSteps" placeholder="1. Navigate to login&#10;2. Enter valid credentials&#10;3. Click Login"></textarea></div>
+    <div class="fg"><label class="fl">Expected Result</label><textarea class="ft" id="cExpectedResult" style="min-height:55px" placeholder="What should happen?"></textarea></div>
+    <div class="fg"><label class="fl">Tags</label><input class="fi" id="cTags" placeholder="low; ready; ui"></div>
 
     <div class="mf">
       <button class="btn btn-outline" onclick="closeModal('caseModal')">Cancel</button>
       <button class="btn btn-green" onclick="saveCase()">Save Test Case</button>
     </div>
-
   </div>
 </div>
 
@@ -1065,44 +1019,91 @@ function caseCardHTML(c){
 
 function openCaseModal(id){
   editCase=id||null;
-  fillProjSel('cProj');
+
   document.getElementById('caseMT').textContent=editCase?'Edit Test Case':'New Test Case';
+
   if(editCase){
     const c=store.cases.find(x=>x.id===editCase);
-    document.getElementById('cTitle').value=c.title;
-    document.getElementById('cProj').value=c.project;
-    document.getElementById('cPri').value=c.priority;
-    document.getElementById('cStat').value=c.status;
-    document.getElementById('cCat').value=c.cat||'functional';
-    document.getElementById('cDesc').value=c.desc||'';
-    document.getElementById('cPre').value=c.pre||'';
+    if(!c)return;
+
+    document.getElementById('cId').value=c.jsonId||c.externalId||'';
+    document.getElementById('cTitle').value=c.title||'';
+    document.getElementById('cLayer').value=c.cat||c.layer||'functional';
+    document.getElementById('cPriority').value=c.priority||'medium';
+    document.getElementById('cStatus').value=c.status||'draft';
+    document.getElementById('cDate').value=c.date||new Date().toISOString().split('T')[0];
+    document.getElementById('cDescription').value=c.desc||c.description||'';
+    document.getElementById('cPreconditions').value=c.pre||c.preconditions||'';
     document.getElementById('cSteps').value=c.steps||'';
-    document.getElementById('cExp').value=c.exp||'';
+    document.getElementById('cExpectedResult').value=c.exp||c.expected_result||'';
+    document.getElementById('cTags').value=c.tags||'';
   }else{
-    ['cTitle','cDesc','cPre','cSteps','cExp'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('cPri').value='medium';
-    document.getElementById('cStat').value='draft';
-    document.getElementById('cCat').value='functional';
+    ['cId','cTitle','cDescription','cPreconditions','cSteps','cExpectedResult','cTags'].forEach(id=>{
+      document.getElementById(id).value='';
+    });
+
+    document.getElementById('cLayer').value='functional';
+    document.getElementById('cPriority').value='medium';
+    document.getElementById('cStatus').value='draft';
+    document.getElementById('cDate').value=new Date().toISOString().split('T')[0];
   }
+
   openModal('caseModal');
 }
 
 function saveCase(){
-  const title=document.getElementById('cTitle').value.trim();if(!title)return;
-  const data={title,project:parseInt(document.getElementById('cProj').value)||1,
-    priority:document.getElementById('cPri').value,status:document.getElementById('cStat').value,
-    cat:document.getElementById('cCat').value,desc:document.getElementById('cDesc').value.trim(),
-    pre:document.getElementById('cPre').value.trim(),steps:document.getElementById('cSteps').value.trim(),
-    exp:document.getElementById('cExp').value.trim(),date:new Date().toISOString().split('T')[0],ai:false};
+  const title=document.getElementById('cTitle').value.trim();
+  const jsonId=document.getElementById('cId').value.trim();
+
+  if(!title){
+    toast('Test case title is required','#dc2626');
+    return;
+  }
+
+  if(!jsonId){
+    toast('Test case ID is required','#dc2626');
+    return;
+  }
+
+  const status=document.getElementById('cStatus').value;
+
+  const data={
+    jsonId:jsonId,
+    title:title,
+    priority:document.getElementById('cPriority').value,
+    status:status,
+    cat:document.getElementById('cLayer').value,
+    desc:document.getElementById('cDescription').value.trim(),
+    pre:document.getElementById('cPreconditions').value.trim(),
+    steps:document.getElementById('cSteps').value.trim(),
+    exp:document.getElementById('cExpectedResult').value.trim(),
+    tags:document.getElementById('cTags').value.trim(),
+    date:document.getElementById('cDate').value||new Date().toISOString().split('T')[0],
+    ai:false
+  };
+
   if(editCase){
     const i=store.cases.findIndex(c=>c.id===editCase);
-    store.cases[i]={...store.cases[i],...data};
+    if(i===-1)return;
+
+    store.cases[i]={...store.cases[i],...data,boardCol:status};
     toast('Test case updated ✓','#16a34a');
   }else{
-    store.cases.push({id:store.nextId.case++,boardCol:'draft',...data});
+    store.cases.push({
+      id:store.nextId.case++,
+      boardCol:status,
+      ...data
+    });
     toast('Test case saved ✓','#16a34a');
   }
-  editCase=null;saveStore();closeModal('caseModal');renderCases();renderDash();
+
+  editCase=null;
+  saveStore();
+  closeModal('caseModal');
+  renderCases();
+  renderDash();
+
+  if(typeof renderBoards==='function')renderBoards();
 }
 
 function delCase(id){
@@ -1306,7 +1307,7 @@ function defStatBadge(s){const m={open:'b-open',closed:'b-closed',inprog:'b-inpr
 function fillProjSel(...ids){ids.forEach(id=>{const el=document.getElementById(id);if(!el)return;el.innerHTML=store.projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');});}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-function openModal(id){document.getElementById(id).classList.add('open');}
+function openModal(id){const el=document.getElementById(id);el.classList.add('open');const modal=el.querySelector('.modal');if(modal)modal.scrollTop=0;}
 function closeModal(id){document.getElementById(id).classList.remove('open');if(id==='caseModal')editCase=null;if(id==='defectModal')editDefect=null;}
 function closeOut(id,e){if(e.target===document.getElementById(id))closeModal(id);}
 
